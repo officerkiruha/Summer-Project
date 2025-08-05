@@ -3,9 +3,10 @@
      margin: 0;
      box-sizing: border-box;
 }
+
 .map_background{
-      width: 175%;
-      height: 350%;
+      width: 120%;
+      height: 150%;
      background-image:url(Hell.jpg);
      background-size:cover;
      background-position:center ;
