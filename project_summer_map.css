@@ -6,7 +6,7 @@
 .map_background{
       width: 175%;
       height: 350%;
-     background-image:url(Hell.jpg);
+     background-image:url(./image/Hell.jpg);
      background-size:cover;
      background-position:center ;
      background-repeat: no-repeat ;
@@ -18,9 +18,10 @@ body{
      width:10vh;
 }
 .player {
-      width: 50px;
-      height: 50px;
-      background-color: red;
+      width: 75px;
+      height: 75px;
+      background-image: url(./image/קיריל.jpg);
+      background-size: cover;
       position: absolute;
       top: 1000px;
       left: 1000px;

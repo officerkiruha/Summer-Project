@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Start Game</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="background_play.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body id="background-start">
+  <div id="play">
+    <button id="button-play"><span>play</span></button>
+  </div>
+
+  <!-- חלונית להזנת שם -->
+  <div id="nameModal" class="modal">
+    <div class="modal-content">
+      <h2>USER: </h2>
+      <input type="text" id="usernameInput" placeholder="USER-NAME" />
+      <br />
+      <button id="submitName">Login</button>
+    </div>
+  </div>
+
+  <!-- מסך טעינה עם טבלה -->
+  <div id="loadingScreen" class="modal">
+    <div class="modal-content">
+      <h2>Loading...</h2>
+      <p>אנא המתן</p>
+      <table id="playersTable">
+        <thead>
+          <tr><th>שמות</th><th>זמן</th></tr>
+
+        </thead>
+        <tbody id="playersBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- מפתחים בעברית באנימציה בצד שמאל -->
+<div class="dev-box left">
+  <h3>מפתחים:</h3>
+  <div class="marquee">
+    <p>קיריל<br>אלי<br>שי<br>אלישיב<br>אריאל</p>
+  </div>
+</div>
+
+<!-- Developers באנימציה בצד ימין -->
+<div class="dev-box right">
+  <h3>Developers:</h3>
+  <div class="marquee">
+    <p>Kiril<br>Eli<br>Shay<br>Elishiv<br>Ariel</p>
+  </div>
+</div>
+
+  <script src="background_play.js"></script>
+</body>
+</html>
