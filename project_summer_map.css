@@ -1,0 +1,30 @@
+* {
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+}
+
+.map_background{
+      width: 120%;
+      height: 150%;
+     background-image:url(Hell.jpg);
+     background-size:cover;
+     background-position:center ;
+     background-repeat: no-repeat ;
+     border: 2px solid black;
+     position: absolute;
+}
+body{
+     height:10vh;
+     width:10vh;
+}
+.player {
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      position: absolute;
+      top: 1000px;
+      left: 1000px;
+      border-radius: 50%;
+    }
+ 
