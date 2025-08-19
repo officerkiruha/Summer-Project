@@ -4,8 +4,8 @@ const c = canvas.getContext('2d');
 
 const gravity = 0.5;
 
-canvas.width = 3024;
-canvas.height = 1720;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 const backgroundIMG = new Image();
 backgroundIMG.src = './Hell.jpg';
@@ -19,10 +19,11 @@ c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 
 
 function backgroundCanvas(){
-  // const pattern = c.createPattern(backgroundIMG, 'no-repeat');
-    // c.fillStyle = pattern;
-    c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
-    // c.fillRect(0, 0, 3000, 3000);d
+// c.save();
+// c.scale(2,2);
+c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
+// c.restore();
+
     
 }
 
@@ -79,7 +80,7 @@ const keys = {
 
 function loop(){
   window.requestAnimationFrame(loop);
-   c.clearRect(0, 0, canvas.width, canvas.height);
+  c.clearRect(0, 0, canvas.width, canvas.height);
   backgroundCanvas();
   player.refresh();
 
