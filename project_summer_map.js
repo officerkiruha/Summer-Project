@@ -4,8 +4,8 @@ const c = canvas.getContext('2d');
 
 const gravity = 0.5;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = 2505;
+canvas.height = 2350;
 
 const backgroundIMG = new Image();
 backgroundIMG.src = './Hell.jpg';
@@ -21,6 +21,7 @@ c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 function backgroundCanvas(){
 // c.save();
 // c.scale(2,2);
+// c.translate(x,y)
 c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 // c.restore();
 
@@ -122,118 +123,3 @@ window.addEventListener("keyup",(event) => {
   }
   
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const player = document.getElementById("player");
-//     let x = 0, y = 1825; 
-//     const speed =10; 
-//     function updatePlayerPosition() {
-//       player.style.left = x + "px";
-//       player.style.top = y + "px";
-//       centerOnPlayer();
-//     }
-//     function centerOnPlayer() {
-//       const scrollX = x - window.innerWidth / 2 + 25;
-//       const scrollY = y - window.innerHeight / 2 + 25;
-//       window.scrollTo(scrollX, scrollY);
-//     }
-//     window.addEventListener("keydown", function (e) {
-//       switch (e.key) {
-//         case "ArrowUp":
-//           y -= speed;
-//           break;
-//         case "ArrowDown":
-//           y += speed;
-//           break;
-//         case "ArrowLeft":
-//           x -= speed;
-//           break;
-//         case "ArrowRight":
-//           x += speed;
-//           break;
-//       }
-//       updatePlayerPosition();
-//     });
-//     updatePlayerPosition();
