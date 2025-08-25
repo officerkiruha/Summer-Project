@@ -85,11 +85,11 @@ function loop(){
   // c.save();
   // c.scale(2,2);
   backgroundCanvas();
+  
+  // collisionsBlocks.forEach(block =>{
+  //   block.update();
+  // });
   // c.restore()
-
-collisionsBlocks.forEach(block =>{
-  block.update();
-});
 
 
   player.refresh();
