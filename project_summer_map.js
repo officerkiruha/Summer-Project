@@ -4,11 +4,11 @@ const c = canvas.getContext('2d');
 
 const gravity = 0.5;
 
-canvas.width = 2505;
-canvas.height = 2350;
+canvas.width = 1600;
+canvas.height = 1600;
 
 const backgroundIMG = new Image();
-backgroundIMG.src = './Hell.jpg';
+backgroundIMG.src = './images/Game_MAP.jpg';
 
 backgroundIMG.onload = () => {
 //  const pattern = c.createPattern(backgroundIMG, 'no-repeat');
@@ -47,7 +47,7 @@ class Player{
 
   make(){
   c.fillStyle = 'blue';
-  c.fillRect(this.position.x,this.position.y,400,this.height);
+  c.fillRect(this.position.x,this.position.y,100,this.height);
 
   }
 
@@ -82,9 +82,19 @@ const keys = {
 function loop(){
   window.requestAnimationFrame(loop);
   c.clearRect(0, 0, canvas.width, canvas.height);
+  // c.save();
+  // c.scale(2,2);
   backgroundCanvas();
+  // c.restore()
+
+collisionsBlocks.forEach(block =>{
+  block.update();
+});
+
+
   player.refresh();
 
+  
   
   player.velocity.x = 0;
   if(keys.d.preesed){
