@@ -32,7 +32,7 @@ c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 
 
 class Player{
-  constructor(){
+  constructor(collisionsBlocks){
     this.position = {
       x: 10,
       y: 20
@@ -41,33 +41,84 @@ class Player{
       x: 0,
       y: 1,
     };
-    this.height = 100;
+    this.height = 40;
+    this.width = 40;
+    this.collisionsBlocks = collisionsBlocks;
 
   }
 
   make(){
   c.fillStyle = 'blue';
-  c.fillRect(this.position.x,this.position.y,100,this.height);
+  c.fillRect(this.position.x,this.position.y,this.width,this.height);
 
   }
 
   refresh(){
     this.make();
 
-  this.position.y += this.velocity.y;
+ 
   this.position.x += this.velocity.x;
-  
-  if(this.position.y + this.height + this.velocity.y < canvas.height ){
-   this.velocity.y += gravity; 
-  }else{
-    this.velocity.y = 0;
-  };
+  this.checkForHorizontalPosition();
+  this.applyGravity();
+  this.checkForVerticalPosition();
+
+  }
+
+  applyGravity(){
+ this.position.y += this.velocity.y;
+ this.velocity.y += gravity; 
+  }
+
+  checkForVerticalPosition(){
+    for(let i = 0; i < this.collisionsBlocks.length ; i++){
+      const currentBlock = this.collisionsBlocks[i];
+
+      if(
+        collisionDetection({player:this,block:currentBlock})
+      ){
+        if(this.velocity.y > 0){
+          this.velocity.y = 0;
+          this.position.y = currentBlock.position.y - this.height - 0.01;
+          break;
+        }
+
+        if(this.velocity.y < 0){
+          this.velocity.y = 0;
+          this.position.y = currentBlock.position.y + currentBlock.height + 0.01;
+          break;
+        }
+        
+      }
+    }
+  }
 
 
+    checkForHorizontalPosition(){
+    for(let i = 0; i < this.collisionsBlocks.length ; i++){
+      const currentBlock = this.collisionsBlocks[i];
+
+      if(
+        collisionDetection({player:this,block:currentBlock})
+      ){
+        if(this.velocity.x > 0){
+          this.velocity.x = 0;
+          this.position.x = currentBlock.position.x - this.width - 0.01;
+          break;
+        }
+
+        if(this.velocity.x < 0){
+          this.velocity.x = 0;
+          this.position.x = currentBlock.position.x + currentBlock.width + 0.01;
+          break;
+        }
+        
+      }
+    }
   }
 }
 
-const player = new Player();
+const player = new Player(collisionsBlocks);
+
 
 const keys = {
   d:{
