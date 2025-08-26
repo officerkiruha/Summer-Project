@@ -1,4 +1,3 @@
-
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
@@ -6,6 +5,9 @@ const gravity = 0.5;
 
 canvas.width = 1600;
 canvas.height = 1600;
+
+const startx = canvas.width /2;
+const starty = canvas.height /2;
 
 const backgroundIMG = new Image();
 backgroundIMG.src = './images/Game_MAP.jpg';
@@ -19,13 +21,7 @@ c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 
 
 function backgroundCanvas(){
-// c.save();
-// c.scale(2,2);
-// c.translate(x,y)
-c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
-// c.restore();
-
-    
+c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height); 
 }
 
 
@@ -33,28 +29,50 @@ c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
 
 class Player{
   constructor(collisionsBlocks){
+    this.height = 30;
+    this.width = 30;
     this.position = {
-      x: 10,
-      y: 20
+      x: 30,
+      y: starty - this.height/2 + 200
     };
     this.velocity = {
       x: 0,
       y: 1,
     };
-    this.height = 40;
-    this.width = 40;
     this.collisionsBlocks = collisionsBlocks;
+    this.cameraBox = {
+      position: {
+        x:this.position.x,
+        y:this.position.y
+      },
+      width: 256,
+      height: 80
+    }
 
   }
 
-  make(){
+make(){
   c.fillStyle = 'blue';
   c.fillRect(this.position.x,this.position.y,this.width,this.height);
 
   }
 
+refreshCameraBox(){
+    this.cameraBox = {
+      position: {
+        x:this.position.x - 115,
+        y:this.position.y - 20
+      },
+      width: 256,
+      height: 80
+    }
+  }
+
   refresh(){
     this.make();
+    this.refreshCameraBox();
+    c.fillStyle = 'rgba(0,0,255,0.2)';
+    c.fillRect(this.cameraBox.position.x,this.cameraBox.position.y,this.cameraBox.width,this.cameraBox.height);
 
  
   this.position.x += this.velocity.x;
@@ -93,7 +111,7 @@ class Player{
   }
 
 
-    checkForHorizontalPosition(){
+  checkForHorizontalPosition(){
     for(let i = 0; i < this.collisionsBlocks.length ; i++){
       const currentBlock = this.collisionsBlocks[i];
 
@@ -114,7 +132,7 @@ class Player{
         
       }
     }
-  }
+}
 }
 
 const player = new Player(collisionsBlocks);
@@ -130,28 +148,29 @@ const keys = {
 }
 
 
+
 function loop(){
   window.requestAnimationFrame(loop);
   c.clearRect(0, 0, canvas.width, canvas.height);
-  // c.save();
-  // c.scale(2,2);
+  c.save();
+  c.scale(2,2);
+  c.translate(0,-360)
   backgroundCanvas();
-  
+  player.refresh();
+  c.restore()
   // collisionsBlocks.forEach(block =>{
   //   block.update();
   // });
-  // c.restore()
 
 
-  player.refresh();
 
   
   
   player.velocity.x = 0;
   if(keys.d.preesed){
-    player.velocity.x = 8;
+    player.velocity.x = 5;
   }else if(keys.a.preesed){
-    player.velocity.x = -8;
+    player.velocity.x = -5;
   }
   
 
@@ -167,7 +186,7 @@ window.addEventListener("keydown",(event) => {
       keys.a.preesed = true;
       break;
       case 'w':
-      player.velocity.y = -15
+      player.velocity.y = -12;
       break;
   }
   
