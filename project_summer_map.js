@@ -3,25 +3,27 @@ const c = canvas.getContext('2d');
 
 const gravity = 0.5;
 
-canvas.width = 1600;
-canvas.height = 1600;
+canvas.width = 1620;
+canvas.height = 1620;
 
 const startx = canvas.width /2;
 const starty = canvas.height /2;
+const playerSpeed = canvas.width * 0.003;
+
 
 const backgroundIMG = new Image();
 backgroundIMG.src = './images/Game_MAP.jpg';
 
 backgroundIMG.onload = () => {
-//  const pattern = c.createPattern(backgroundIMG, 'no-repeat');
-//  c.fillStyle = pattern;
-c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
-//  c.fillRect(0, 0, 3000, 3000);
+  //  const pattern = c.createPattern(backgroundIMG, 'no-repeat');
+  //  c.fillStyle = pattern;
+  c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height);
+  //  c.fillRect(0, 0, 3000, 3000);
 };
 
 
 function backgroundCanvas(){
-c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height); 
+  c.drawImage(backgroundIMG,0,0,canvas.width,canvas.height); 
 }
 
 
@@ -48,16 +50,84 @@ class Player{
       width: 256,
       height: 80
     }
-
+    
   }
-
-make(){
-  c.fillStyle = 'blue';
-  c.fillRect(this.position.x,this.position.y,this.width,this.height);
-
+  
+  cameraToLeft({canvas, camera}){
+    this.refreshCameraBox();
+    const cameraBoxRight = this.cameraBox.position.x + this.cameraBox.width;
+    const scaledCanvas = camera.position.x + (canvas.width / 2) - 100;
+    if(camera.position.x + scaledCanvas >= backgroundIMG.width + 900) return
+    if(cameraBoxRight >= scaledCanvas){
+      console.log('right');
+      camera.position.x += this.velocity.x;
+    }
+    
   }
+cameraToRight({ canvas, camera }) {
+  this.refreshCameraBox();
+  const cameraBoxLeft = this.cameraBox.position.x;
+  const leftBoundary = camera.position.x + canvas.width * 0.2;
+  
+  // Only move camera if player is pushing past the left boundary
+  if (cameraBoxLeft < leftBoundary) {
+    camera.position.x += this.velocity.x;
+    
+    // Clamp to left edge
+    if (camera.position.x < 0) {
+      camera.position.x = 0;
+    }
+  }
+}
 
-refreshCameraBox(){
+cameraPanUp({ canvas, camera }) {
+  this.refreshCameraBox();
+
+  const cameraBoxTop = this.cameraBox.position.y;
+  const topBoundary = camera.position.y + canvas.height * 0.25;
+
+  if (camera.position.y <= 0) return;
+
+  if (cameraBoxTop < topBoundary) {
+    const moveY = this.velocity.y !== 0 ? this.velocity.y : -2;
+    camera.position.y += moveY;
+
+    if (camera.position.y < 0) {
+      camera.position.y = 0;
+    }
+  }
+}
+
+cameraPanDown({ canvas, camera }) {
+  this.refreshCameraBox();
+
+  const cameraBoxBottom = this.cameraBox.position.y + this.cameraBox.height;
+  const bottomBoundary = camera.position.y + (canvas.height / 2) * 0.75;
+
+  const worldHeight = canvas.height * 2;
+
+  // Clamp at bottom of map
+  if (camera.position.y + canvas.height >= worldHeight) return;
+
+  if (cameraBoxBottom > bottomBoundary) {
+    // Always move camera down (positive direction)
+    const moveY = Math.abs(this.velocity.y) || 2;
+    camera.position.y += moveY;
+
+    // Clamp to bottom edge
+    if (camera.position.y + canvas.height > worldHeight) {
+      camera.position.y = worldHeight - canvas.height;
+    }
+  }
+}
+
+  make(){
+    c.fillStyle = 'blue';
+    c.fillRect(this.position.x,this.position.y,this.width,this.height);
+    
+  }
+  
+  refreshCameraBox(){
     this.cameraBox = {
       position: {
         x:this.position.x - 115,
@@ -66,31 +136,32 @@ refreshCameraBox(){
       width: 256,
       height: 80
     }
+    c.fillStyle = 'rgba(0,0,255,0.2)';
+    c.fillRect(this.cameraBox.position.x,this.cameraBox.position.y,this.cameraBox.width,this.cameraBox.height);
   }
-
+  
   refresh(){
     this.make();
     this.refreshCameraBox();
-    c.fillStyle = 'rgba(0,0,255,0.2)';
-    c.fillRect(this.cameraBox.position.x,this.cameraBox.position.y,this.cameraBox.width,this.cameraBox.height);
-
- 
-  this.position.x += this.velocity.x;
-  this.checkForHorizontalPosition();
-  this.applyGravity();
-  this.checkForVerticalPosition();
-
+    
+    
+    
+    this.position.x += this.velocity.x;
+    this.checkForHorizontalPosition();
+    this.applyGravity();
+    this.checkForVerticalPosition();
+    
   }
-
+  
   applyGravity(){
- this.position.y += this.velocity.y;
- this.velocity.y += gravity; 
+    this.position.y += this.velocity.y;
+    this.velocity.y += gravity; 
   }
-
+  
   checkForVerticalPosition(){
     for(let i = 0; i < this.collisionsBlocks.length ; i++){
       const currentBlock = this.collisionsBlocks[i];
-
+      
       if(
         collisionDetection({player:this,block:currentBlock})
       ){
@@ -99,7 +170,7 @@ refreshCameraBox(){
           this.position.y = currentBlock.position.y - this.height - 0.01;
           break;
         }
-
+        
         if(this.velocity.y < 0){
           this.velocity.y = 0;
           this.position.y = currentBlock.position.y + currentBlock.height + 0.01;
@@ -109,12 +180,12 @@ refreshCameraBox(){
       }
     }
   }
-
-
+  
+  
   checkForHorizontalPosition(){
     for(let i = 0; i < this.collisionsBlocks.length ; i++){
       const currentBlock = this.collisionsBlocks[i];
-
+      
       if(
         collisionDetection({player:this,block:currentBlock})
       ){
@@ -123,7 +194,7 @@ refreshCameraBox(){
           this.position.x = currentBlock.position.x - this.width - 0.01;
           break;
         }
-
+        
         if(this.velocity.x < 0){
           this.velocity.x = 0;
           this.position.x = currentBlock.position.x + currentBlock.width + 0.01;
@@ -132,11 +203,17 @@ refreshCameraBox(){
         
       }
     }
-}
+  }
 }
 
 const player = new Player(collisionsBlocks);
 
+const camera = {
+  position: {
+    x:0,
+    y:360
+  }
+};
 
 const keys = {
   d:{
@@ -151,28 +228,33 @@ const keys = {
 
 function loop(){
   window.requestAnimationFrame(loop);
+  player.velocity.x = 0;
+  if(keys.d.preesed){
+    player.velocity.x = playerSpeed;
+    player.cameraToLeft({canvas,camera});
+  }else if(keys.a.preesed){
+    player.velocity.x = -playerSpeed;
+    player.cameraToRight({canvas,camera});
+  }
+
+if (player.velocity.y < 0) {
+  player.cameraPanUp({ canvas, camera });
+} if (player.velocity.y > 0) {
+  player.cameraPanDown({ canvas, camera });
+}
+
+
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.save();
   c.scale(2,2);
-  c.translate(0,-360)
+  c.translate(-camera.position.x,-camera.position.y)
   backgroundCanvas();
   player.refresh();
-  c.restore()
   // collisionsBlocks.forEach(block =>{
   //   block.update();
   // });
+  c.restore()
 
-
-
-  
-  
-  player.velocity.x = 0;
-  if(keys.d.preesed){
-    player.velocity.x = 5;
-  }else if(keys.a.preesed){
-    player.velocity.x = -5;
-  }
-  
 
 }
 loop();

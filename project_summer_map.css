@@ -1,10 +1,16 @@
 html, body {
   margin: 0;
   padding: 0;
-  /* background: black; fallback */
-  /* overflow: hidden; */
+  height: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 canvas {
+  width: 4000px;
+  height: 4000px;
   display: block;
 }

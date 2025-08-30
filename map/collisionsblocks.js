@@ -17,8 +17,8 @@ class collisionsBlock{
 
 
 collisionsMap=[]
-for(let i =0;i<collisions.length;i +=160){
-collisionsMap.push(collisions.slice(i,i+160))
+for(let i =0;i<collisions.length;i +=162){
+collisionsMap.push(collisions.slice(i,i+162))
 };
 
 const collisionsBlocks = [];
