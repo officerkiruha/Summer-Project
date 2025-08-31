@@ -21,8 +21,9 @@ html, body {
 #play {
   position: absolute;
   top: 55%;
-  left: 50%;
+  left: 52%;
   transform: translate(-50%, -50%);
+  scale: 3.2;
 }
 
 #button-play {
@@ -99,6 +100,7 @@ html, body {
   margin: 15% auto;
   text-align: center;
   box-shadow: 0 0 20px #0ff;
+  scale: 3.8;
 }
 
 .modal-content input {
@@ -151,15 +153,16 @@ table, th, td {
   overflow: hidden;
   padding: 10px;
   user-select: none;
+  scale: 3.5;
 }
 
 /* מיקום משמאל וימין */
 .dev-box.left {
-  left: 55px;
+  left: 600px;
 }
 
 .dev-box.right {
-  right: 55px;
+  right: 600px;
 }
 
 /* כותרת */
