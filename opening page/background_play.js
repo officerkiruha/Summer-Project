@@ -30,6 +30,8 @@ confirmPlayerBtn.addEventListener("click", () => {
     alert("בחר שחקן!");
     return;
   }
+localStorage.setItem("selectedPlayer", selectedPlayer);
+
   playerSelectModal.style.display = "none";
   nameModal.style.display = "flex";
 });

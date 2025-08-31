@@ -10,9 +10,14 @@ const startx = canvas.width /2;
 const starty = canvas.height /2;
 const playerSpeed = canvas.width * 0.003;
 
-
 const backgroundIMG = new Image();
 backgroundIMG.src = './images/Game_MAP.jpg';
+const selectedPlayerIndex = parseInt(localStorage.getItem("selectedPlayer"));
+
+
+const images_spirt= ["images/eli_spirt_end.png","images/elishive_spirt_end1.png","images/spirt_hazout.png","images/kirl_spirt_end.png","images/shay_spirt_end.png"]
+
+
 
 backgroundIMG.onload = () => {
   //  const pattern = c.createPattern(backgroundIMG, 'no-repeat');
@@ -50,8 +55,79 @@ class Player{
       width: 256,
       height: 80
     }
+
+    this.image = new Image();
+    const selectedPlayer = localStorage.getItem("selectedPlayer") ;
+    this.image.src = images_spirt[parseInt(selectedPlayer) - 1];
+    this.frameX = 0;
+    this.frameY = 0;
+    this.onGround = false;
+    this.direction = "left";
+    this.frameCounter = 0;
     
   }
+
+make() {
+//   c.fillStyle = 'blue';
+//  c.fillRect(this.position.x, this.position.y, this.width, this.height);
+      if (!this.onGround) {
+    // קפיצה
+    this.frameX = 1;   // עמודת JUMP
+    this.frameY = 0;   // שורה ראשונה
+  } else if (this.velocity.x !== 0) {
+    // הליכה
+    this.frameY = 0;   // שורה ראשונה
+    this.frameCounter++;
+    if (this.frameCounter % 15 === 0) { // קצת יותר איטי
+      this.frameX = (this.frameX + 1) % 2; // יש 2 פריימים להליכה
+    }
+  } else {
+    // עומד (idle)
+    this.frameX = 0;
+    this.frameY = 0;
+  }
+
+    c.save();
+
+
+    const spriteWidth = 64;   // הגודל של כל פריים בתמונה
+    const spriteHeight = 64;  // הגובה של כל פריים בתמונה
+
+    if (this.direction === "right") {
+            c.scale(-1, 1);
+      c.drawImage(
+        this.image,
+        this.frameX * spriteWidth,
+        this.frameY * spriteHeight,
+        spriteWidth,
+        spriteHeight,
+        -this.position.x - this.width,
+        this.position.y,
+        this.width,
+        this.height
+      );
+
+
+      // הפיכת הדמות לצד שמאל
+
+    } else {
+      c.drawImage(
+        this.image,
+        this.frameX * spriteWidth,
+        this.frameY * spriteHeight,
+        spriteWidth,
+        spriteHeight,
+        this.position.x,
+        this.position.y,
+        this.width,
+        this.height
+
+     
+      );
+    }
+
+    c.restore();
+}
   
   cameraToLeft({canvas, camera}){
     this.refreshCameraBox();
@@ -121,11 +197,6 @@ cameraPanDown({ canvas, camera }) {
   }
 }
 
-  make(){
-    c.fillStyle = 'blue';
-    c.fillRect(this.position.x,this.position.y,this.width,this.height);
-    
-  }
   
   refreshCameraBox(){
     this.cameraBox = {
@@ -136,8 +207,8 @@ cameraPanDown({ canvas, camera }) {
       width: 256,
       height: 80
     }
-    c.fillStyle = 'rgba(0,0,255,0.2)';
-    c.fillRect(this.cameraBox.position.x,this.cameraBox.position.y,this.cameraBox.width,this.cameraBox.height);
+    // c.fillStyle = 'rgba(0,0,255,0.2)';
+    // c.fillRect(this.cameraBox.position.x,this.cameraBox.position.y,this.cameraBox.width,this.cameraBox.height);
   }
   
   refresh(){
@@ -235,6 +306,7 @@ function loop(){
   }else if(keys.a.preesed){
     player.velocity.x = -playerSpeed;
     player.cameraToRight({canvas,camera});
+    // player.moveLeft();
   }
 
 if (player.velocity.y < 0) {
@@ -263,9 +335,11 @@ window.addEventListener("keydown",(event) => {
   switch(event.key){
     case 'd':
       keys.d.preesed = true;
+      player.direction = "left";
       break;
       case 'a':
       keys.a.preesed = true;
+      player.direction = "right";
       break;
       case 'w':
       player.velocity.y = -12;
